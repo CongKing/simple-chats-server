@@ -38,16 +38,13 @@ module.exports = function(server) {
             const create_time = Date.now()
 
             new chatModel({from, to, content, chat_id, create_time}).save((err, chatMsg) => {
-                let sid
-                scoketModel.findOne({uid: to}, (err, socket) => {
+                socketModel.find({uid: {$in: [to, from]}}, (err, sockets) => {
                     if(err) return console.log(err)
-                    sid = socket.sid
-
-                    const toSocket = io.sockets.sockets[sid]
-                    if(toSocket) {
-                        toSocket.emit('receiveMsg', chatMsg)
-                        console.log('send')
-                    }
+                    
+                    sockets.forEach(socket => {
+                     const toSocket = io.sockets.sockets[socket.sid]
+                     toSocket && toSocket.emit('receiveMsg', chatMsg)
+                    })
                 })
             })
 
