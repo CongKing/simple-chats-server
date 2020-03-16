@@ -36,8 +36,8 @@ const chatSchema = mongoose.Schema({
 
 const userModel = mongoose.model('user', userSchema)
 const chatModel = mongoose.model('chatMsg', chatSchema)
-const scoketModel = mongoose.model('socket', socketSchema)
+const socketModel = mongoose.model('socket', socketSchema)
 
 exports.userModel = userModel
 exports.chatModel = chatModel
-exports.scoketModel = scoketModel
+exports.socketModel = socketModel

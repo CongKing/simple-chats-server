@@ -1,4 +1,4 @@
-const {chatModel, scoketModel} = require('../db/models')
+const {chatModel, socketModel} = require('../db/models')
 var cookieParser = require('cookie-parser')
 
 function parseCookie(cookieStr) {
@@ -23,9 +23,9 @@ module.exports = function(server) {
     io.on('connection', (socket) => {
         
         const cookie = parseCookie(socket.request.headers.cookie)
-        scoketModel.findOneAndUpdate({uid: cookie.userid}, {sid: socket.id}, (err, updateSocket) => {
+        socketModel.findOneAndUpdate({uid: cookie.userid}, {sid: socket.id}, (err, updateSocket) => {
             if(!updateSocket) {
-                new scoketModel({uid: cookie.userid, sid: socket.id}).save((err) => {
+                new socketModel({uid: cookie.userid, sid: socket.id}).save((err) => {
                     if(err) console.log(err)
                 })
 
